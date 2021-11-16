@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportes" language="groovy" pageWidth="540" pageHeight="720" columnWidth="500" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7479d4c1-c39c-4523-bbeb-5cd4b6cbebde">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="1"/>
+	<queryString>
+		<![CDATA[SELECT
+UC.UNID_CONTROL_DESCRIPCION AS UNIDAD_DE_CONTROL,
+COUNT(REGISTRO.UNID_CONTROL_ID) AS VECES_UTILIZADA
+FROM REGISTRO
+INNER JOIN UNID_CONTROL UC ON REGISTRO.UNID_CONTROL_ID=UC.UNID_CONTROL_ID
+GROUP BY UC.UNID_CONTROL_DESCRIPCION
+ORDER BY COUNT(REGISTRO.UNID_CONTROL_ID) DESC;]]>
+	</queryString>
+	<field name="unidad_de_control" class="java.lang.String"/>
+	<field name="veces_utilizada" class="java.lang.Long"/>
+	<variable name="unidad_de_control_1" class="java.lang.Integer" resetType="Column" calculation="Count">
+		<variableExpression><![CDATA[$F{unidad_de_control}]]></variableExpression>
+	</variable>
+	<variable name="veces_utilizada_1" class="java.lang.Long" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{veces_utilizada}]]></variableExpression>
+	</variable>
+	<variable name="unidad_de_control_2" class="java.lang.Integer" resetType="Column" calculation="DistinctCount">
+		<variableExpression><![CDATA[$F{unidad_de_control}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="59" y="0" width="346" height="57" uuid="d88dd8db-b067-4c93-a5d3-2ca54b312c29"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte en ireport que muestre en un gráfico las unidades decontrol desde la más usada a la menos usada]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="33" splitType="Stretch">
+			<staticText>
+				<reportElement x="59" y="0" width="100" height="20" uuid="509e4313-9842-495e-a55f-184ad071e5c0"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Unidad de control]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="318" y="0" width="100" height="20" uuid="59af6256-1707-4f89-b6cd-b70960a64423"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Numero de veces utilizada]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="23" splitType="Stretch">
+			<textField>
+				<reportElement x="59" y="0" width="118" height="20" uuid="41395539-ce19-4a86-8273-c6f8ef0100ee"/>
+				<textFieldExpression><![CDATA[$F{unidad_de_control}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="318" y="0" width="100" height="20" uuid="9e18d41a-6f9c-48ad-946e-6c8fee08e02e"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{veces_utilizada}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="225" splitType="Stretch">
+			<pieChart>
+				<chart>
+					<reportElement x="61" y="37" width="357" height="176" uuid="bbce9640-0081-4ab8-a5f4-f524753be991"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<keyExpression><![CDATA[$F{unidad_de_control}]]></keyExpression>
+					<valueExpression><![CDATA[$F{veces_utilizada}]]></valueExpression>
+				</pieDataset>
+				<piePlot>
+					<plot/>
+					<itemLabel/>
+				</piePlot>
+			</pieChart>
+		</band>
+	</summary>
+</jasperReport>
